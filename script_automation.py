@@ -3,36 +3,47 @@ import requests
 import csv
 import ast
 import shutil
-print("--","len(scene)","---->>>")
-
-
-path_root = './'
-# path_root = os.getcwd()
-path_downlad = os.path.join(path_root, 'Download_scenes_v')
-path_scenes = os.path.join(path_root, 'LC08')
-
-
-
-#lista os arquivos
-path_temp = os.getcwd()
-os.chdir(path_downlad)
-list_all_files= list(filter(os.path.isfile, os.listdir()))
-os.chdir(path_temp)
-
-
-
-unprocessed_scenes = []
-[unprocessed_scenes.append(x[0:40]) for x in list_all_files if x[0:40] not in unprocessed_scenes]
-print(unprocessed_scenes)
-len(unprocessed_scenes)
-
-
 # from osgeo import gdal
-import glob
+# import glob
 import subprocess
+print("--","len(scene)","---->>>")
+print(os.getcwd())
 
-# import subprocess
-# from osgeo import gdal
+class ColorCompositonLC08:
+
+    def __init__(self) -> None:
+        self.path_root = './'
+        self.path_download = os.path.join(self.path_root, 'Download_scenes_v')
+        # self.path_download = os.path.join(self.path_root, 'Download_scenes/pasta_xpto2/')
+        self.path_scenes = os.path.join(self.path_root, 'LC08')
+
+        print("--1-->>> path_root " + self.path_root)
+        print("--2-->>> path_download " + self.path_download)
+        print("--3-->>> path_scenes " + self.path_scenes)
+
+
+    def list_downloaded_files(self):
+        #lista os arquivos
+        path_temp = os.getcwd()
+        os.chdir(self.path_download)
+        list_all_files= list(filter(os.path.isfile, os.listdir()))
+        os.chdir(path_temp)
+        print("--4-->>>  ")
+        print(list_all_files)
+        # import pdb; pdb.set_trace()
+
+        return list_all_files
+
+
+    def list_unprocessed_scenes(self):
+        unprocessed_scenes = []
+        list_all_files = self.list_downloaded_files()
+        [unprocessed_scenes.append(x[0:40]) for x in list_all_files if x[0:40] not in unprocessed_scenes]
+        print("--5-->>>  " + str(len(unprocessed_scenes)))
+        print(unprocessed_scenes)
+
+        return unprocessed_scenes
+
 
 dd = './Download_scenes_v/'
 # dd = './Download_scenes/pasta_xpto2/'
@@ -58,3 +69,8 @@ for scene in unprocessed_scenes:
             #move o arquivo
             # shutil.move('./Download_scenes/pasta_xpto2/', './LC08x/foi/foiDeNovo')
             shutil.copy(os.path.join(dd,os.path.split(file_scene)[1]), path_scene)
+
+
+
+instance = ColorCompositonLC08()
+instance.list_unprocessed_scenes()
