@@ -39,7 +39,7 @@ dd = './Download_scenes_v/'
 for scene in unprocessed_scenes:
   satellite, colection, orbita, ponto = scene[:4], scene[35:37],scene[10:13],scene[13:16]
   path_scene = os.path.join(satellite, colection, orbita, ponto, scene)
-  band4, band5, band6, mtl_scene, scene_composition  = dd + scene + '_B4.TIF', dd + scene + '_B5.TIF', dd + scene + '_B6.TIF', dd + scene + '_MTL.txt', os.path.join(path_scene, scene + '_B6B5B4.TIF')
+  band4, band5, band6, mtl_scene, scene_composition  = dd + scene + '_B4.TIF', dd + scene + '_B5.TIF', dd + scene + '_B6.TIF', dd + scene + '_MTL.txt', os.path.join(path_scene, scene + '_R6G5B4.TIF')
   files_scene = [band4, band5, band6, mtl_scene,]
   print(band5+"Foi---------<<<<<<<<<<")
 #   import pdb; pdb.set_trace()
@@ -48,7 +48,7 @@ for scene in unprocessed_scenes:
     os.makedirs(path_scene, exist_ok=True)
     if os.path.isdir(path_scene) and not os.path.exists(os.path.join(path_scene,os.path.split(scene_composition)[1])):
         cmd="gdal_merge.py -ot Float32 -of GTiff -separate -o " + scene_composition
-        demList = [band4, band5, band6]
+        demList = [band6, band5, band4]
         subprocess.call(cmd.split()+demList)
         print("----------------------->>>>>>>>>>>>>>" + demList[1])
         # import pdb; pdb.set_trace()
